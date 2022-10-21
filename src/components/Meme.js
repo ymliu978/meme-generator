@@ -3,15 +3,28 @@ import memesData from "../memesData"
 
 export default function Meme() {
 
-    const [memeImage, setMemeImage] = React.useState("")
+    // create an object with 3 properties in State
+    const [meme, setMeme] = React.useState({
+        topText: "",
+        bottomText: "",
+        randomImage: "http://i.imgflip.com/1bij.jpg" 
+    })
 
-    function getMemeImg() {
-        //define data array
-        const memesArray = memesData.data.memes
-        //get random number that is a whole number and within array range
-        const randomNum = Math.floor(Math.random()*memesArray.length)
-        //useState
-        setMemeImage(memesArray[randomNum].url)
+    // create a variable in State that default to memesData.js
+    const [allMemeImages, setAllMemeImages] = React.useState(memesData)
+
+    function getMemeImage() {
+        // define data array
+        const memesArray = allMemeImages.data.memes
+        // get random number that is a whole number and within array range
+        const randomNumber = Math.floor(Math.random() * memesArray.length)
+        // get random url of image
+        const url = memesArray[randomNumber].url
+        // update/replace one of the properties in state while others reamin the same
+        setMeme(prevMeme => ({
+            ...prevMeme,
+            randomImage: url
+        }))
     }
 
 
@@ -22,9 +35,9 @@ export default function Meme() {
                     <input className="meme--input" type="text" placeholder="top text field" />
                     <input className="meme--input" type="text" placeholder="bottom text field" />
                 </div>
-                <button onClick={getMemeImg} className="meme--button" type="button">Get a new meme image  🖼</button>
+                <button onClick={getMemeImage} className="meme--button" type="button">Get a new meme image  🖼</button>
             </form>
-            <img src={memeImage} className="meme-image"/>
+            <img src={meme.randomImage} className="meme--image"/>
         </main>
         
     )
